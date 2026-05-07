@@ -43,6 +43,6 @@ npm install
 # Run the development server (Uses Vercel CLI to run both React and Serverless functions locally)
 vercel dev
 ```
-
-### Vercel
-This project is already configured to deploy to Vercel. Simply connect your GitHub repository to Vercel, and it will automatically build and deploy on push.
+## 📜 License
+MIT License.
+Core engine and UI architecture inspired by [GitMusic](https://github.com/niyamax/gitmusic.git).
