@@ -1,56 +1,48 @@
-# Git Defense
+# Git Defense 🛡️
 
-Turn your GitHub & GitLab contributions into a defense fortress. 🛡️
+Turn your GitHub & GitLab contributions into a formidable tower defense fortress.
 
-Git Defense takes a username, automatically scans both **GitHub** and **GitLab** to find the most active profile, and turns your coding activity patterns into a unique, ambient defense sequence.
+Git Defense takes a username, scans **GitHub** or **GitLab** for your 365-day contribution history, and transforms your coding activity into a fully interactive, terminal-styled tower defense game. Defend your server base against incoming threats using the very code you wrote!
 
 ![Git Defense Demo](./public/demo.png)
 
-## Features
+## 🎮 Features
 
-- **Multi-Platform Support**: Works with both GitHub and GitLab. Automatically detects which platform has more activity.
-- **Ambient Defense Engine**: Uses [Tone.js](https://tonejs.github.io/) to generate soothing, reverb-drenched soundscapes based on your work habits.
-- **Visualize & Protect**: Watch your contribution graph light up in sync with the melody.
-- **Share**: Generate a clean, shareable link (e.g., `gitdefense.com/username`) that auto-resolves the correct platform for visitors.
-- **Export**: Record and download a high-quality `.webm` or `.mp4` video of your fortress playing.
-- **Interactive**: Keyboard shortcuts for playback, recording, and sharing.
+- **Gamified Activity:** Watch as your daily commits become defensive walls. Level 1-4 commits correspond to walls of increasing durability (from frail wooden fences to impenetrable titanium bunkers).
+- **Multi-Platform Support:** Works seamlessly with both GitHub and GitLab.
+- **Terminal Aesthetics:** Clean, minimalist, dark-mode UI inspired by hacker consoles and retro interfaces.
+- **Physics Engine:** Powered by smooth animations (Framer Motion) to simulate enemy attacks and wall destruction.
+- **Interactive Gameplay:** Watch the battle unfold. Will your coding streak be enough to stop the tank and save the base?
+- **Share Your Fortress:** Generate a clean, shareable link (e.g., `gitdefense.com/username`) to challenge friends and see whose codebase is the strongest.
 
-## Usage
+## 🚀 Usage
 
-1. Enter a GitHub or GitLab username.
-2. Press **Enter** - the app will auto-detect your platform.
-3. Press **Space** or click Play to listen to your year in code.
+1. Enter a GitHub or GitLab username using the terminal prompt:
+   ```bash
+   $ gitdefense fetch <username>
+   ```
+2. Press Enter - the app will fetch your 52-week contribution data.
 
-> **Tip**: Can't find the right profile? You can force a specific platform by typing:  
-> `$ gitdefense fetch username -p gitlab`
+3. Watch the invasion begin!
+Tip: Want to force a specific platform? Use the -p flag:
+    ```bash
+    $ gitdefense fetch username -p gitlab
+    ```
 
-### Keyboard Shortcuts
+## 🛠 Tech Stack
+- **Frontend**: React (Vite), Tailwind CSS
+- **Game Engine & Animations**: Framer Motion
+- **Backend (Proxy API)**: Vercel Serverless Functions (cheerio for GitHub, native fetch for GitLab)
+- **Icons**: Lucide React
 
-| Key | Action |
-| --- | --- |
-| **Space** | Play / Pause |
-| **R** | Start / Stop Recording |
-| **S** | Share (Copy Link) |
-| **Esc** | Stop |
-
-## Tech Stack
-
-- **React** (Vite)
-- **Tone.js** for audio synthesis (PolySynths, FMSine, Reverb)
-- **Axios** for data fetching
-- **GitHub Contribution API** (via [github-contributions-api](https://github.com/grubersjoe/github-contributions-api))
-- **GitLab API** (via custom proxy)
-
-## Development
-
+## 📝 Deployment
 ```bash
 # Install dependencies
 npm install
 
-# Run development server
-npm run dev
+# Run the development server (Uses Vercel CLI to run both React and Serverless functions locally)
+vercel dev
 ```
 
-## License
-
-MIT
+### Vercel
+This project is already configured to deploy to Vercel. Simply connect your GitHub repository to Vercel, and it will automatically build and deploy on push.
