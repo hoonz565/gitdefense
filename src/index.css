@@ -1,0 +1,71 @@
+/* ===== GIT MUSIC - HYBRID TERMINAL STYLE ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #0d0d0d;
+  --border: #f23400;
+  --text: #aaaaaa;
+  --text-dim: #555555;
+  --text-bright: #ffffff;
+  --accent: #f23400;
+  --accent-cyan: #66cccc;
+  --accent-yellow: #dcdcaa;
+  --success: #4ec9b0;
+  --error: #cc5533;
+  --level-0: #1a1a1a;
+  --level-1: #0e4429;
+  --level-2: #006d32;
+  --level-3: #26a641;
+  --level-4: #39d353;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 1rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 650px;
+  overflow-x: hidden;
+}
+
+/* Mobile overflow fix */
+@media (max-width: 600px) {
+  html {
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
+    padding: 0.75rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
