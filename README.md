@@ -44,5 +44,4 @@ npm install
 vercel dev
 ```
 ## 📜 License
-MIT License.
 Core engine and UI architecture inspired by [GitMusic](https://github.com/niyamax/gitmusic.git).
