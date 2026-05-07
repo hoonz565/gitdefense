@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback, memo, useRef } from 'react';
 import * as Tone from 'tone';
 import { fetchContributions } from '../services/contributions';
-import { useAudioEngine } from '../hooks/useAudioEngine';
+import { useDefenseEngine } from '../hooks/useDefenseEngine';
 import { useSequencer } from '../hooks/useSequencer';
-import './EmbedWidget.css';
+import './GitDefenseWidget.css';
 
 const DayCell = memo(({ day, isPlaying }) => (
     <div
@@ -24,7 +24,7 @@ const WeekCol = memo(React.forwardRef(({ week, weekIndex, isActive, activeNotes 
     </div>
 )));
 
-const EmbedWidget = () => {
+const GitDefenseWidget = () => {
     const [username, setUsername] = useState('');
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -33,7 +33,7 @@ const EmbedWidget = () => {
     const [showLink, setShowLink] = useState(true);
     const widgetRef = useRef(null);
 
-    const audioEngine = useAudioEngine(username, { melody: -10, pad: -20, drum: -4, metal: -14 }, data);
+    const audioEngine = useDefenseEngine(username, { melody: -10, pad: -20, drum: -4, metal: -14 }, data);
     const sequencer = useSequencer(audioEngine, username);
 
     // Send height to parent for auto-resize iframe
@@ -41,7 +41,7 @@ const EmbedWidget = () => {
         const sendHeight = () => {
             if (widgetRef.current) {
                 const height = widgetRef.current.scrollHeight;
-                window.parent.postMessage({ type: 'gitmusic-resize', height }, '*');
+                window.parent.postMessage({ type: 'gitdefense-resize', height }, '*');
             }
         };
 
@@ -139,7 +139,7 @@ const EmbedWidget = () => {
         return (
             <div className="embed-widget">
                 <div className="embed-header">
-                    <span className="embed-logo">GitMusic</span>
+                    <span className="embed-logo">GitDefense</span>
                 </div>
                 <div className="embed-loading">Loading...</div>
             </div>
@@ -150,7 +150,7 @@ const EmbedWidget = () => {
         return (
             <div className="embed-widget">
                 <div className="embed-header">
-                    <span className="embed-logo">GitMusic</span>
+                    <span className="embed-logo">GitDefense</span>
                 </div>
                 <div className="embed-error">{error}</div>
             </div>
@@ -162,8 +162,8 @@ const EmbedWidget = () => {
             {/* Header with username */}
             <div className="embed-header">
                 <div className="embed-brand">
-                    <img src="https://gitmusic.niyasv.com/favicon.png" alt="" className="embed-favicon" />
-                    <span className="embed-title">GitMusic</span>
+                    <img src="https://gitdefense.niyasv.com/favicon.png" alt="" className="embed-favicon" />
+                    <span className="embed-title">GitDefense</span>
                 </div>
                 <span className="embed-username">@{username}</span>
             </div>
@@ -211,8 +211,8 @@ const EmbedWidget = () => {
                     )}
                 </button>
                 {showLink && (
-                    <a href={`https://gitmusic.niyasv.com/${username}`} target="_blank" rel="noopener noreferrer" className="embed-link">
-                        gitmusic.niyasv.com
+                    <a href={`https://gitdefense.niyasv.com/${username}`} target="_blank" rel="noopener noreferrer" className="embed-link">
+                        gitdefense.niyasv.com
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                             <polyline points="15 3 21 3 21 9"></polyline>
@@ -225,4 +225,4 @@ const EmbedWidget = () => {
     );
 };
 
-export default EmbedWidget;
+export default GitDefenseWidget;

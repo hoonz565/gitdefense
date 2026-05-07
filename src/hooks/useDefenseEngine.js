@@ -44,7 +44,7 @@ export const getSignatureOscillator = (username) => {
     return SOOTHING_TYPES[Math.abs(hash) % SOOTHING_TYPES.length];
 };
 
-export function useAudioEngine(username, volumes = DEFAULT_VOLUMES, data = null) {
+export function useDefenseEngine(username, volumes = DEFAULT_VOLUMES, data = null) {
     const gainRef = useRef(null);
     const limiterRef = useRef(null);
     const filterRef = useRef(null); // Low-pass filter for soothing tone
@@ -57,7 +57,7 @@ export function useAudioEngine(username, volumes = DEFAULT_VOLUMES, data = null)
     const pianoReverbRef = useRef(null); // Reverb for Lead/Piano
     const padReverbRef = useRef(null);   // Massive Reverb for Pads
 
-    // Initialize audio engine
+    // Initialize defense engine
     useEffect(() => {
         // Master Gain (Fixed at 0dB, individual tracks controlled separately)
         gainRef.current = new Tone.Gain(1).toDestination();

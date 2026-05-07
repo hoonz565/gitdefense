@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback, memo, useRef, forwardRef } from 'react';
 import * as Tone from 'tone';
 import { fetchContributions, fetchGitHubContributions, fetchGitLabContributions } from '../services/contributions';
-import { useAudioEngine } from '../hooks/useAudioEngine';
+import { useDefenseEngine } from '../hooks/useDefenseEngine';
 import { useSequencer } from '../hooks/useSequencer';
-import './GitSequencer.css';
+import './GitDefenseBoard.css';
 
 // Memoized day cell to prevent unnecessary re-renders
 const DayCell = memo(({ day, isPlaying }) => (
@@ -26,7 +26,7 @@ const WeekCol = memo(forwardRef(({ week, weekIndex, isActive, activeNotes, style
     </div>
 )));
 
-const GitSequencer = () => {
+const GitDefenseBoard = () => {
     const [username, setUsername] = useState('');
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -42,8 +42,8 @@ const GitSequencer = () => {
     const [showCursor, setShowCursor] = useState(true);
     const [platform, setPlatform] = useState('github');
 
-    // Custom hooks for audio
-    const audioEngine = useAudioEngine(username, volumes, data);
+    // Custom hooks for defense engine
+    const audioEngine = useDefenseEngine(username, volumes, data);
     const sequencer = useSequencer(audioEngine, username);
 
     const {
@@ -284,7 +284,7 @@ const GitSequencer = () => {
         const asciiLineHeight = asciiFontSize * 1.2;
         const asciiHeight = 4 * asciiLineHeight;
         const subtitleLineHeight = subtitleFontSize * 1.3;
-        const subtitleLines = 2;  // "Turn your GitHub/GitLab contributions" + "into music"
+        const subtitleLines = 2;  // "Turn your GitHub/GitLab contributions" + "into a defense fortress"
         const subtitleHeight = subtitleLines * subtitleLineHeight;
         const fieldsetContentHeight = asciiHeight + headerContentGap + subtitleHeight;
         const fieldsetHeight = fieldsetPaddingY * 2 + fieldsetContentHeight;
@@ -327,7 +327,7 @@ const GitSequencer = () => {
         const titleFont = `bold ${legendTitleSize}px monospace`;
         const versionFont = `${legendVersionSize}px monospace`;
         ctx.font = titleFont;
-        const titleText = 'GitMusic';
+        const titleText = 'GitDefense';
         const titleWidth = ctx.measureText(titleText).width;
         ctx.font = versionFont;
         const versionText = 'v1.0.0';
@@ -344,7 +344,7 @@ const GitSequencer = () => {
         ctx.fillStyle = colors.bg;
         ctx.fillRect(legendX - legendPaddingH, legendY - legendVersionSize / 2, totalLegendWidth, legendTitleSize + 4 * scale);
 
-        // Legend text: "GitHub Music v1.0.0"
+        // Legend text: "GitHub Defense v1.0.0"
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = colors.accent;
@@ -363,7 +363,7 @@ const GitSequencer = () => {
         ctx.textBaseline = 'top';
         ctx.globalAlpha = 0.8;
         const asciiLines = [
-            '   ♫       ♪',
+            '   🛡️       ⚔️',
             ' ▄ █ ▄ █ ▄ █',
             ' █ █ █ █ █ █',
             ' ▀ ▀ ▀ ▀ ▀ ▀'
@@ -380,8 +380,8 @@ const GitSequencer = () => {
         ctx.font = `bold ${subtitleFontSize}px monospace`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillText('Turn your GitHub/GitLab contributions', fieldsetCenterX, subtitleY);
-        ctx.fillText('into music', fieldsetCenterX, subtitleY + subtitleLineHeight);
+        ctx.fillText('Turn your contributions into', fieldsetCenterX, subtitleY);
+        ctx.fillText('a defense fortress', fieldsetCenterX, subtitleY + subtitleLineHeight);
         ctx.textBaseline = 'alphabetic';
 
         currentY += fieldsetHeight + fieldsetMarginBottom;
@@ -395,10 +395,10 @@ const GitSequencer = () => {
 
         ctx.fillStyle = colors.accentYellow;
         const promptWidth = ctx.measureText('$ ').width;
-        ctx.fillText('gitmusic fetch', cmdX + promptWidth, currentY);
+        ctx.fillText('gitdefense fetch', cmdX + promptWidth, currentY);
 
         ctx.fillStyle = colors.textBright;
-        const cmdWidth = ctx.measureText('gitmusic fetch ').width;
+        const cmdWidth = ctx.measureText('gitdefense fetch ').width;
         ctx.fillText(username, cmdX + promptWidth + cmdWidth, currentY);
 
         currentY += commandLineHeight + statusMarginTop;
@@ -469,7 +469,7 @@ const GitSequencer = () => {
         ctx.fillStyle = colors.textDim;
         ctx.font = `${13 * scale}px monospace`;
         ctx.textAlign = 'center';
-        ctx.fillText(`gitmusic.niyasv.com`, canvasWidth / 2, canvasHeight - 40 * scale);
+        ctx.fillText(`gitdefense.niyasv.com`, canvasWidth / 2, canvasHeight - 40 * scale);
 
     }, [data, activeCol, activeNotes, username]);
 
@@ -528,7 +528,7 @@ const GitSequencer = () => {
 
                     // Determine extension
                     const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
-                    const filename = `git-music-${username}.${ext}`;
+                    const filename = `git-defense-${username}.${ext}`;
                     const file = new File([blob], filename, { type: mimeType });
 
                     // Try Web Share API (Mobile Only)
@@ -538,8 +538,8 @@ const GitSequencer = () => {
                         try {
                             await navigator.share({
                                 files: [file],
-                                title: 'Git Music',
-                                text: `Check out my year in code music! 🎵\nGenerated by Git Music.`,
+                                title: 'Git Defense',
+                                text: `Check out my code defense fortress! 🛡️\nGenerated by Git Defense.`,
                                 url: window.location.href // Include link to app
                             });
                             return; // Share successful
@@ -600,7 +600,7 @@ const GitSequencer = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const link = document.createElement('a');
-        link.download = `git-music-preview-${username || 'test'}.png`;
+        link.download = `git-defense-preview-${username || 'test'}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     };
@@ -722,7 +722,7 @@ const GitSequencer = () => {
                                 </svg>
                             </button>
                         </div>
-                        <p className="embed-modal-desc">Add this widget to your website to showcase your contribution music.</p>
+                        <p className="embed-modal-desc">Add this widget to your website to showcase your code defense fortress.</p>
                         <div className="embed-code-box">
                             <code>{getEmbedCode()}</code>
                         </div>
@@ -741,12 +741,12 @@ const GitSequencer = () => {
             {/* Simple Fieldset Header */}
             <fieldset className="header-fieldset">
                 <legend className="header-legend">
-                    <span className="header-title">GitMusic</span> <span className="header-version">v1.0.0</span>
+                    <span className="header-title">GitDefense</span> <span className="header-version">v1.0.0</span>
                 </legend>
 
                 <div className="header-content">
                     <div className="header-left">
-                        <pre className="header-ascii">{`   ♫       ♪
+                        <pre className="header-ascii">{`   🛡️       ⚔️
  ▄ █ ▄ █ ▄ █
  █ █ █ █ █ █
  ▀ ▀ ▀ ▀ ▀ ▀`}</pre>
@@ -756,7 +756,7 @@ const GitSequencer = () => {
 
                     <div className="header-right">
                         <div className="header-section">
-                            <div className="header-label">Turn your GitHub/GitLab contributions into music</div>
+                            <div className="header-label">Turn your GitHub/GitLab contributions into a defense fortress</div>
                         </div>
                     </div>
                 </div>
@@ -767,7 +767,7 @@ const GitSequencer = () => {
                 {/* Command Line */}
                 <form onSubmit={handleSearch} className="command-line">
                     <span className="prompt">$</span>
-                    <span className="cmd">gitmusic fetch</span>
+                    <span className="cmd">gitdefense fetch</span>
                     <div className="input-wrapper">
                         <span ref={measureRef} className="input-measure" aria-hidden="true" />
                         {showCursor && (
@@ -939,7 +939,7 @@ const GitSequencer = () => {
 
 
 
-            {/* Inline Embed Section - shows after music is generated */}
+            {/* Inline Embed Section - shows after defense is generated */}
             {data && !isAnimating && !error && !hasNoContributions && (
                 <div className="embed-section">
                     <div className="embed-section-header">
@@ -979,4 +979,4 @@ const GitSequencer = () => {
     );
 };
 
-export default GitSequencer;
+export default GitDefenseBoard;

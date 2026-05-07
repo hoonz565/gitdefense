@@ -29,7 +29,7 @@ export function useSequencer(audioEngine, username) {
     const { playNote, playChord, playKick, playSnare, playHiHat } = audioEngine;
 
     // Determine scale based on activity level
-    // FIXED: Use Single Signature Scale for consistent musical journey per user
+    // FIXED: Use Single Signature Scale for consistent defense journey per user
     const getScaleForActivity = (activity) => {
         return { scale: scaleTypeRef.current, pattern: 'Flow' };
     };

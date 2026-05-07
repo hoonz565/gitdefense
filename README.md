@@ -1,18 +1,18 @@
-# Git Music
+# Git Defense
 
-Turn your GitHub & GitLab contributions into music. 🎵
+Turn your GitHub & GitLab contributions into a defense fortress. 🛡️
 
-Git Music takes a username, automatically scans both **GitHub** and **GitLab** to find the most active profile, and turns your coding activity patterns into a unique, ambient musical sequence.
+Git Defense takes a username, automatically scans both **GitHub** and **GitLab** to find the most active profile, and turns your coding activity patterns into a unique, ambient defense sequence.
 
-![Git Music Demo](./public/demo.png)
+![Git Defense Demo](./public/demo.png)
 
 ## Features
 
 - **Multi-Platform Support**: Works with both GitHub and GitLab. Automatically detects which platform has more activity.
-- **Ambient Audio Engine**: Uses [Tone.js](https://tonejs.github.io/) to generate soothing, reverb-drenched soundscapes based on your work habits.
-- **Visualize & Listen**: Watch your contribution graph light up in sync with the melody.
-- **Share**: Generate a clean, shareable link (e.g., `gitmusic.com/username`) that auto-resolves the correct platform for visitors.
-- **Export**: Record and download a high-quality `.webm` or `.mp4` video of your graph playing.
+- **Ambient Defense Engine**: Uses [Tone.js](https://tonejs.github.io/) to generate soothing, reverb-drenched soundscapes based on your work habits.
+- **Visualize & Protect**: Watch your contribution graph light up in sync with the melody.
+- **Share**: Generate a clean, shareable link (e.g., `gitdefense.com/username`) that auto-resolves the correct platform for visitors.
+- **Export**: Record and download a high-quality `.webm` or `.mp4` video of your fortress playing.
 - **Interactive**: Keyboard shortcuts for playback, recording, and sharing.
 
 ## Usage
@@ -22,7 +22,7 @@ Git Music takes a username, automatically scans both **GitHub** and **GitLab** t
 3. Press **Space** or click Play to listen to your year in code.
 
 > **Tip**: Can't find the right profile? You can force a specific platform by typing:  
-> `$ gitmusic fetch username -p gitlab`
+> `$ gitdefense fetch username -p gitlab`
 
 ### Keyboard Shortcuts
 
