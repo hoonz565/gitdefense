@@ -889,7 +889,7 @@ const GitDefenseBoard = () => {
                         </>
                     )}
                 </button>
-                <button
+                {/* <button
                     className={`ctrl-btn ${isRecording ? 'recording' : ''}`}
                     onClick={handleExport}
                     disabled={!data || isAnimating || error || hasNoContributions}
@@ -910,8 +910,8 @@ const GitDefenseBoard = () => {
                             <span>Record</span>
                         </>
                     )}
-                </button>
-                <button
+                </button> */}
+                {/* <button
                     className="ctrl-btn"
                     onClick={handleShare}
                     disabled={!data || isAnimating || error || hasNoContributions}
@@ -922,8 +922,8 @@ const GitDefenseBoard = () => {
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                     </svg>
                     <span>Copy Link</span>
-                </button>
-                <button
+                </button> */}
+                {/* <button
                     className="ctrl-btn"
                     onClick={() => setShowEmbed(true)}
                     disabled={!data || isAnimating || error || hasNoContributions}
@@ -934,13 +934,13 @@ const GitDefenseBoard = () => {
                         <polyline points="8 6 2 12 8 18"></polyline>
                     </svg>
                     <span>Embed</span>
-                </button>
+                </button> */}
             </div>
 
 
 
             {/* Inline Embed Section - shows after defense is generated */}
-            {data && !isAnimating && !error && !hasNoContributions && (
+            {/* {data && !isAnimating && !error && !hasNoContributions && (
                 <div className="embed-section">
                     <div className="embed-section-header">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -960,14 +960,14 @@ const GitDefenseBoard = () => {
                         Copy Embed Code
                     </button>
                 </div>
-            )}
+            )} */}
 
             {/* Footer hint */}
             <div className="footer-hint">
-                {data && !isAnimating && !error
+                {/* {data && !isAnimating && !error
                     ? 'Space: play · R: record · S: share · Esc: stop'
                     : '\u00A0'
-                }
+                } */}
             </div>
 
             {/* Hidden Canvas */}
