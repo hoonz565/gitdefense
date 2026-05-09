@@ -885,7 +885,7 @@ const GitDefenseBoard = () => {
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
                             </svg>
-                            <span>Play</span>
+                            <span>Start</span>
                         </>
                     )}
                 </button>
@@ -965,7 +965,7 @@ const GitDefenseBoard = () => {
             {/* Footer hint */}
             <div className="footer-hint">
                 {/* {data && !isAnimating && !error
-                    ? 'Space: play · R: record · S: share · Esc: stop'
+                    ? 'Space: start · R: record · S: share · Esc: stop'
                     : '\u00A0'
                 } */}
             </div>
