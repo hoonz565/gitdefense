@@ -306,20 +306,19 @@
 .graph-grid {
     display: flex;
     gap: 2px;
-    width: 100%;
 }
 
 .week-col {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    flex: 1;
+    flex: 0 0 14px;
     min-width: 0;
 }
 
 .day-cell {
-    width: 100%;
-    aspect-ratio: 1;
+    width: 14px;
+    height: 14px;
     background: var(--level-0);
     border-radius: 2px;
     transition: background 0.1s, box-shadow 0.1s;

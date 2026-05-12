@@ -40,8 +40,20 @@ body {
 
 .app-container {
   width: 100%;
-  max-width: 650px;
+  max-width: 100%;
+  padding: 2rem 3rem;
   overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem;
+  }
 }
 
 /* Mobile overflow fix */
