@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, memo, useRef, forwardRef } from 'react';
 import * as Tone from 'tone';
+import { motion, AnimatePresence } from 'framer-motion';
 import { fetchContributions, fetchGitHubContributions, fetchGitLabContributions } from '../services/contributions';
 import { useDefenseEngine } from '../hooks/useDefenseEngine';
 import { useSequencer } from '../hooks/useSequencer';
@@ -58,6 +59,18 @@ const GitDefenseBoard = () => {
         stop,
         changeScale
     } = sequencer;
+
+    // Game States
+    const [gameStatus, setGameStatus] = useState('idle'); // 'idle' | 'playing' | 'victory' | 'defeat' | 'paused'
+    const [tankPosition, setTankPosition] = useState(-1);
+    const [tankHP, setTankHP] = useState(250);
+    const [maxTankHP, setMaxTankHP] = useState(250);
+
+    // Reset game when data changes
+    useEffect(() => {
+        setGameStatus('idle');
+        setTankPosition(-1);
+    }, [data]);
 
     // Focus input on mount
     useEffect(() => {
@@ -215,8 +228,87 @@ const GitDefenseBoard = () => {
     }, [activeCol]);
 
     const handleTogglePlay = useCallback(() => {
+        if (!isPlaying) {
+            if (gameStatus === 'idle' || gameStatus === 'victory' || gameStatus === 'defeat') {
+                setGameStatus('playing');
+                setTankPosition(-1);
+                
+                // Calculate balanced HP based on grid density
+                let totalDamage = 0;
+                if (data && data.weeks) {
+                    data.weeks.forEach(w => {
+                        w.days.forEach(d => {
+                            if (d.level === 1) totalDamage += 1;
+                            if (d.level === 2) totalDamage += 2;
+                            if (d.level === 3) totalDamage += 3;
+                            if (d.level === 4) totalDamage += 5;
+                        });
+                    });
+                }
+                // Require at least some density to win
+                const initialHP = Math.max(50, Math.floor(totalDamage * 0.4));
+                setTankHP(initialHP);
+                setMaxTankHP(initialHP);
+            } else if (gameStatus === 'paused') {
+                setGameStatus('playing');
+            }
+        } else {
+            setGameStatus('paused');
+        }
         toggle(data);
-    }, [toggle, data]);
+    }, [toggle, data, gameStatus, isPlaying]);
+
+    // Game loop
+    useEffect(() => {
+        let interval;
+        if (gameStatus === 'playing') {
+            interval = setInterval(() => {
+                setTankPosition(prev => {
+                    const nextPos = prev + 1;
+                    
+                    if (nextPos > 51) {
+                        setGameStatus('defeat');
+                        return prev;
+                    }
+                    
+                    // Calculate damage
+                    if (data && data.weeks[nextPos]) {
+                        let damage = 0;
+                        data.weeks[nextPos].days.forEach(day => {
+                            if (day.level === 1) damage += 1;
+                            if (day.level === 2) damage += 2;
+                            if (day.level === 3) damage += 3;
+                            if (day.level === 4) damage += 5;
+                        });
+                        
+                        if (damage > 0) {
+                            setTankHP(currentHP => {
+                                const newHP = currentHP - damage;
+                                if (newHP <= 0) {
+                                    setGameStatus('victory');
+                                    return 0;
+                                }
+                                return newHP;
+                            });
+                        }
+                    }
+                    
+                    return nextPos;
+                });
+            }, 300); // 300ms per column
+        }
+        
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [gameStatus, data]);
+
+    // Sync sequencer stop on game end
+    useEffect(() => {
+        if ((gameStatus === 'victory' || gameStatus === 'defeat') && isPlaying) {
+            stop();
+        }
+    }, [gameStatus, isPlaying, stop]);
 
     // Check if there are no contributions
     const hasNoContributions = data && data.weeks.every(w => w.days.every(d => d.level === 0));
@@ -831,7 +923,38 @@ const GitDefenseBoard = () => {
             {/* Contribution Graph */}
             <div className={`graph-section ${!data || isAnimating || error ? 'no-data' : ''}`} ref={graphSectionRef}>
                 {data && !isAnimating && !error ? (
-                    <div className="graph-grid">
+                    <div className="graph-grid" style={{ position: 'relative' }}>
+                        {/* Game Entities */}
+                        <div style={{ position: 'absolute', right: '-10px', top: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', zIndex: 5, opacity: gameStatus === 'defeat' ? 0.2 : 1, filter: gameStatus === 'defeat' ? 'grayscale(1) brightness(0.5)' : 'none', transition: 'all 0.5s' }}>
+                            🏠
+                            {gameStatus === 'defeat' && <span style={{ position: 'absolute', fontSize: '3rem' }}>💥</span>}
+                        </div>
+                        
+                        {gameStatus !== 'idle' && tankPosition >= 0 && (
+                            <motion.div 
+                                animate={{ left: `${(tankPosition / 52) * 100}%` }} 
+                                transition={{ duration: 0.3, ease: 'linear' }} 
+                                style={{ position: 'absolute', top: 0, bottom: 0, width: `${100 / 52}%`, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}
+                            >
+                                <div style={{ position: 'absolute', top: '-15px', width: '300%', left: '-100%', height: '4px', backgroundColor: '#ff4444', borderRadius: '2px', overflow: 'hidden' }}>
+                                    <div style={{ height: '100%', width: `${Math.max(0, (tankHP / maxTankHP) * 100)}%`, backgroundColor: '#39d353', transition: 'width 0.2s' }} />
+                                </div>
+                                <div style={{ width: '100%', height: '100%', background: 'rgba(255, 68, 68, 0.2)', border: '1px solid #ff4444', borderRadius: '2px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', backdropFilter: 'blur(1px)' }}>
+                                    <span style={{ color: '#ff4444', fontWeight: 'bold', transform: 'rotate(90deg)', whiteSpace: 'nowrap', fontSize: '1rem', textShadow: '0 0 5px rgba(255,0,0,0.8)' }}>[██▓▒░]</span>
+                                </div>
+                            </motion.div>
+                        )}
+                        
+                        {gameStatus === 'victory' && (
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }} 
+                                animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }} 
+                                style={{ position: 'absolute', left: `${(tankPosition / 52) * 100}%`, top: '50%', fontSize: '4rem', zIndex: 20, pointerEvents: 'none' }}
+                            >
+                                💥
+                            </motion.div>
+                        )}
+
                         {data.weeks.map((week, wIndex) => (
                             <WeekCol
                                 key={wIndex}
