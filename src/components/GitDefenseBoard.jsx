@@ -232,7 +232,7 @@ const GitDefenseBoard = () => {
             if (gameStatus === 'idle' || gameStatus === 'victory' || gameStatus === 'defeat') {
                 setGameStatus('playing');
                 setTankPosition(-1);
-                
+
                 // Calculate balanced HP based on grid density
                 let totalDamage = 0;
                 if (data && data.weeks) {
@@ -265,12 +265,12 @@ const GitDefenseBoard = () => {
             interval = setInterval(() => {
                 setTankPosition(prev => {
                     const nextPos = prev + 1;
-                    
+
                     if (nextPos > 51) {
                         setGameStatus('defeat');
                         return prev;
                     }
-                    
+
                     // Calculate damage
                     if (data && data.weeks[nextPos]) {
                         let damage = 0;
@@ -280,7 +280,7 @@ const GitDefenseBoard = () => {
                             if (day.level === 3) damage += 3;
                             if (day.level === 4) damage += 5;
                         });
-                        
+
                         if (damage > 0) {
                             setTankHP(currentHP => {
                                 const newHP = currentHP - damage;
@@ -292,12 +292,12 @@ const GitDefenseBoard = () => {
                             });
                         }
                     }
-                    
+
                     return nextPos;
                 });
             }, 300); // 300ms per column
         }
-        
+
         return () => {
             if (interval) clearInterval(interval);
         };
@@ -924,12 +924,12 @@ const GitDefenseBoard = () => {
             <div className={`graph-section ${!data || isAnimating || error ? 'no-data' : ''}`} ref={graphSectionRef}>
                 {data && !isAnimating && !error ? (
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '2rem', width: '100%', position: 'relative' }}>
-                        
+
                         {/* Left Sibling: The Tank */}
                         <div style={{ flexShrink: 0, width: '50px', position: 'relative', zIndex: 10 }}>
                             {gameStatus !== 'idle' && tankPosition >= -1 && (
-                                <motion.div 
-                                    animate={{ 
+                                <motion.div
+                                    animate={{
                                         x: tankPosition < 0 ? '0px' : `calc(2rem + ${tankPosition * 16}px)`
                                     }}
                                     transition={{ duration: 0.3, ease: 'linear' }}
@@ -939,33 +939,33 @@ const GitDefenseBoard = () => {
                                     <div style={{ position: 'absolute', top: '-15px', width: '100%', left: '0', height: '4px', backgroundColor: '#ff4444', borderRadius: '2px', overflow: 'hidden' }}>
                                         <div style={{ height: '100%', width: `${Math.max(0, (tankHP / maxTankHP) * 100)}%`, backgroundColor: '#39d353', transition: 'width 0.2s' }} />
                                     </div>
-                                    
+
                                     {/* Tank SVG */}
                                     <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: 'auto' }}>
-                                      <rect x="8" y="44" width="48" height="12" rx="4" fill="#1a1a1a" stroke="#4ec9b0" strokeWidth="2" />
-                                      <circle cx="16" cy="50" r="3" fill="#4ec9b0" />
-                                      <circle cx="26" cy="50" r="3" fill="#4ec9b0" />
-                                      <circle cx="36" cy="50" r="3" fill="#4ec9b0" />
-                                      <circle cx="46" cy="50" r="3" fill="#4ec9b0" />
-                                      <path d="M12 44 L16 32 L44 32 L52 44 Z" fill="#1a1a1a" stroke="#4ec9b0" strokeWidth="2" />
-                                      <path d="M22 32 L26 22 L38 22 L40 32 Z" fill="#1a1a1a" stroke="#4ec9b0" strokeWidth="2" />
-                                      <rect x="38" y="24" width="24" height="4" fill="#4ec9b0" />
+                                        <rect x="8" y="44" width="48" height="12" rx="4" fill="#1a1a1a" stroke="#4ec9b0" strokeWidth="2" />
+                                        <circle cx="16" cy="50" r="3" fill="#4ec9b0" />
+                                        <circle cx="26" cy="50" r="3" fill="#4ec9b0" />
+                                        <circle cx="36" cy="50" r="3" fill="#4ec9b0" />
+                                        <circle cx="46" cy="50" r="3" fill="#4ec9b0" />
+                                        <path d="M12 44 L16 32 L44 32 L52 44 Z" fill="#1a1a1a" stroke="#4ec9b0" strokeWidth="2" />
+                                        <path d="M22 32 L26 22 L38 22 L40 32 Z" fill="#1a1a1a" stroke="#4ec9b0" strokeWidth="2" />
+                                        <rect x="38" y="24" width="24" height="4" fill="#4ec9b0" />
                                     </svg>
                                 </motion.div>
                             )}
-                            
+
                             {/* Explosion over tank */}
                             {gameStatus === 'victory' && (
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }} 
-                                    animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }} 
-                                    style={{ 
-                                        position: 'absolute', 
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
+                                    animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+                                    style={{
+                                        position: 'absolute',
                                         left: `calc(25px + 2rem + ${tankPosition * 16}px)`,
-                                        top: '50%', 
-                                        fontSize: '4rem', 
-                                        zIndex: 20, 
-                                        pointerEvents: 'none' 
+                                        top: '50%',
+                                        fontSize: '4rem',
+                                        zIndex: 20,
+                                        pointerEvents: 'none'
                                     }}
                                 >
                                     💥
@@ -990,13 +990,13 @@ const GitDefenseBoard = () => {
 
                         {/* Right Sibling: The Base (House) */}
                         <div style={{ flexShrink: 0, width: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                            <svg 
-                                viewBox="0 0 64 64" 
-                                fill="none" 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                style={{ 
-                                    width: '100%', 
-                                    height: 'auto', 
+                            <svg
+                                viewBox="0 0 64 64"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                style={{
+                                    width: '100%',
+                                    height: 'auto',
                                     opacity: gameStatus === 'defeat' ? 0.2 : 1,
                                     filter: gameStatus === 'defeat' ? 'grayscale(1) brightness(0.5)' : 'none',
                                     transition: 'all 0.5s'
