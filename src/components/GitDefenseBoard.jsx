@@ -923,10 +923,10 @@ const GitDefenseBoard = () => {
             {/* Contribution Graph */}
             <div className={`graph-section ${!data || isAnimating || error ? 'no-data' : ''}`} ref={graphSectionRef}>
                 {data && !isAnimating && !error ? (
-                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '2rem', width: '100%', position: 'relative' }}>
+                    <div style={{ position: 'relative', width: 'max-content' }}>
 
-                        {/* Left Sibling: The Tank */}
-                        <div style={{ flexShrink: 0, width: '50px', position: 'relative', zIndex: 10 }}>
+                        {/* Left Sibling: The Tank (Absolute) */}
+                        <div style={{ position: 'absolute', right: '100%', marginRight: '2rem', top: '50%', transform: 'translateY(-50%)', width: '50px', zIndex: 10 }}>
                             {gameStatus !== 'idle' && tankPosition >= -1 && (
                                 <motion.div
                                     animate={{
@@ -988,8 +988,8 @@ const GitDefenseBoard = () => {
                             ))}
                         </div>
 
-                        {/* Right Sibling: The Base (House) */}
-                        <div style={{ flexShrink: 0, width: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                        {/* Right Sibling: The Base (House) (Absolute) */}
+                        <div style={{ position: 'absolute', left: '100%', marginLeft: '2rem', top: '50%', transform: 'translateY(-50%)', width: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <svg
                                 viewBox="0 0 64 64"
                                 fill="none"
