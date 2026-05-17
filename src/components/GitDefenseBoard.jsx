@@ -43,7 +43,8 @@ const GitDefenseBoard = () => {
     const [showCursor, setShowCursor] = useState(true);
     const [platform, setPlatform] = useState('github');
 
-    // Custom hooks for defense engine
+    // Custom hooks for defense engine (Music & Light effects from gitmusic - Commented out for future use)
+    /*
     const audioEngine = useDefenseEngine(username, volumes, data);
     const sequencer = useSequencer(audioEngine, username);
 
@@ -59,12 +60,21 @@ const GitDefenseBoard = () => {
         stop,
         changeScale
     } = sequencer;
+    */
 
     // Game States
     const [gameStatus, setGameStatus] = useState('idle'); // 'idle' | 'playing' | 'victory' | 'defeat' | 'paused'
     const [tankPosition, setTankPosition] = useState(-1);
     const [tankHP, setTankHP] = useState(250);
     const [maxTankHP, setMaxTankHP] = useState(250);
+
+    // Fallback variables for disabled music/light effects
+    const isPlaying = gameStatus === 'playing';
+    const activeCol = null;
+    const activeNotes = [];
+    const toggle = () => {};
+    const stop = () => { setGameStatus('idle'); };
+    const changeScale = () => {};
 
     // Reset game when data changes
     useEffect(() => {
