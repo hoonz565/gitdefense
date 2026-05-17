@@ -67,6 +67,44 @@ const GitDefenseBoard = () => {
     const [tankPosition, setTankPosition] = useState(-1);
     const [tankHP, setTankHP] = useState(250);
     const [maxTankHP, setMaxTankHP] = useState(250);
+    const lastHitColRef = useRef(-1);
+
+    // Collision Sound Effect
+    const hitSynthRef = useRef(null);
+    const explosionSynthRef = useRef(null);
+    useEffect(() => {
+        hitSynthRef.current = new Tone.MembraneSynth({
+            pitchDecay: 0.1,
+            octaves: 4,
+            oscillator: { type: 'square' },
+            envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.1 }
+        }).toDestination();
+        hitSynthRef.current.volume.value = -12;
+
+        explosionSynthRef.current = new Tone.NoiseSynth({
+            noise: { type: 'brown' },
+            envelope: { attack: 0.005, decay: 0.5, sustain: 0.1, release: 1 }
+        }).toDestination();
+        explosionSynthRef.current.volume.value = -8;
+
+        return () => {
+            if (hitSynthRef.current) hitSynthRef.current.dispose();
+            if (explosionSynthRef.current) explosionSynthRef.current.dispose();
+        };
+    }, []);
+
+    // Play explosion sound on victory (tank destroyed)
+    useEffect(() => {
+        if (gameStatus === 'victory') {
+            if (explosionSynthRef.current && Tone.context.state === 'running') {
+                try {
+                    explosionSynthRef.current.triggerAttackRelease("1n", Tone.now());
+                } catch (e) {
+                    console.warn("Explosion audio error:", e);
+                }
+            }
+        }
+    }, [gameStatus]);
 
     // Fallback variables for disabled music/light effects
     const isPlaying = gameStatus === 'playing';
@@ -237,11 +275,13 @@ const GitDefenseBoard = () => {
         }
     }, [activeCol]);
 
-    const handleTogglePlay = useCallback(() => {
+    const handleTogglePlay = useCallback(async () => {
+        await Tone.start();
         if (!isPlaying) {
             if (gameStatus === 'idle' || gameStatus === 'victory' || gameStatus === 'defeat') {
                 setGameStatus('playing');
                 setTankPosition(-1);
+                lastHitColRef.current = -1;
 
                 // Calculate balanced HP based on grid density
                 let totalDamage = 0;
@@ -292,6 +332,16 @@ const GitDefenseBoard = () => {
                         });
 
                         if (damage > 0) {
+                            if (lastHitColRef.current !== nextPos) {
+                                lastHitColRef.current = nextPos;
+                                if (hitSynthRef.current && Tone.context.state === 'running') {
+                                    try {
+                                        hitSynthRef.current.triggerAttackRelease("C2", "16n", Tone.now());
+                                    } catch (e) {
+                                        console.warn("Audio scheduling error:", e);
+                                    }
+                                }
+                            }
                             setTankHP(currentHP => {
                                 const newHP = currentHP - damage;
                                 if (newHP <= 0) {
