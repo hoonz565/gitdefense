@@ -2,6 +2,8 @@
 
 > Turn your GitHub & GitLab contributions into a terminal-style tower defense game.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-gitdefense.vercel.app-success?style=for-the-badge&logo=vercel&logoColor=white)](https://gitdefense.vercel.app/)
+
 GitDefense scans a GitHub or GitLab username for their 52-week contribution history and transforms it into a live tower defense battle. An enemy tank rolls across your contribution grid — each green block is a wall of resistance. The denser your coding activity, the harder the tank gets hit. Will your streak survive the assault?
 
 ![GitDefense Demo](./public/demo.png)
