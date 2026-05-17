@@ -71,27 +71,3 @@ npm install
 # Start the dev server (includes GitLab proxy via Vite)
 npm run dev
 ```
-
----
-
-## 📦 Deployment (Vercel)
-
-```bash
-# Build for production
-npm run build
-
-# Deploy to Vercel (serverless function for GitLab proxy is included automatically)
-vercel --prod
-```
-
----
-
-## 🎵 Credits
-
-Original UI architecture and contribution graph concept inspired by [GitMusic](https://github.com/niyamax/gitmusic.git) by [@niyamax](https://github.com/niyamax).
-
----
-
-## 📜 License
-
-MIT
