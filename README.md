@@ -10,19 +10,20 @@ GitDefense scans a GitHub or GitLab username for their 52-week contribution hist
 
 ---
 
-## 🎮 How It Works
+## 🎮 How It Works & Usage
 
-1. **Enter a username** via the terminal-style prompt:
+1. **Enter a GitHub or GitLab username** via the terminal-style prompt:
    ```
    $ gitdefense fetch <username>
    ```
-2. Your contribution graph loads as a **52-column battlefield**.
-3. Hit **Start** — the tank rolls in from the left toward your base on the right.
-4. Each week column deals damage to the tank based on contribution levels (Level 1–4).
-5. **You WIN** if the tank runs out of HP before reaching the base.
-6. **You LOSE** if the tank breaks through and destroys the base.
+2. Press **Enter** - the app will auto-detect your platform.
+3. Press **Space** or click **Start** to play and watch your year in code defend your base.
+4. Your contribution graph loads as a **52-column battlefield**.
+5. Each week column deals damage to the tank based on contribution levels (Level 1–4).
+6. **You WIN** if the tank runs out of HP before reaching the base.
+7. **You LOSE** if the tank breaks through and destroys the base.
 
-> **Tip:** Force a specific platform with `-p`:
+> 💡 **Tip:** Can't find the right profile? You can force a specific platform by typing:
 > ```
 > $ gitdefense fetch username -p gitlab
 > ```
