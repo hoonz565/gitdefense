@@ -819,3 +819,114 @@
         display: none;
     }
 }
+
+/* ===== GAME RESULT OVERLAY ===== */
+.game-result-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    animation: overlay-fade-in 0.4s ease forwards;
+}
+
+@keyframes overlay-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.game-result-box {
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 2.5rem 3rem;
+    background: var(--bg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    animation: result-box-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    min-width: 300px;
+}
+
+.game-result-box.win {
+    border-color: var(--accent);
+    box-shadow: 0 0 32px rgba(57, 211, 83, 0.25);
+}
+
+.game-result-box.lose {
+    border-color: var(--error);
+    box-shadow: 0 0 32px rgba(204, 85, 51, 0.25);
+}
+
+@keyframes result-box-in {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+.game-result-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+.game-result-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    animation: glitch-flicker 3s infinite;
+    line-height: 1;
+}
+
+.game-result-box.win  .game-result-title { color: var(--accent); }
+.game-result-box.lose .game-result-title { color: var(--error); }
+
+@keyframes glitch-flicker {
+    0%, 94%, 96%, 100% { opacity: 1; }
+    95%                { opacity: 0.4; }
+}
+
+.game-result-sub {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.game-result-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--text-dim);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.game-result-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+@media (max-width: 600px) {
+    .game-result-box {
+        padding: 2rem 1.5rem;
+        min-width: 260px;
+    }
+
+    .game-result-title {
+        font-size: 2rem;
+    }
+}

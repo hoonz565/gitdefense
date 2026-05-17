@@ -33,8 +33,11 @@ const GitDefenseWidget = () => {
     const [showLink, setShowLink] = useState(true);
     const widgetRef = useRef(null);
 
+    // Custom hooks for defense engine (Music & Light effects from gitmusic - Commented out for future use)
+    /*
     const audioEngine = useDefenseEngine(username, { melody: -10, pad: -20, drum: -4, metal: -14 }, data);
     const sequencer = useSequencer(audioEngine, username);
+    */
 
     // Send height to parent for auto-resize iframe
     useEffect(() => {
@@ -57,7 +60,16 @@ const GitDefenseWidget = () => {
         return () => resizeObserver.disconnect();
     }, [data, showLink]);
 
+    /*
     const { isPlaying, activeCol, activeNotes, toggle, stop } = sequencer;
+    */
+
+    // Fallback variables since music is disabled
+    const [isPlaying, setIsPlaying] = useState(false);
+    const activeCol = null;
+    const activeNotes = [];
+    const toggle = () => { setIsPlaying(p => !p); };
+    const stop = () => { setIsPlaying(false); };
 
     // Refs for auto-scroll
     const graphRef = useRef(null);
@@ -162,7 +174,7 @@ const GitDefenseWidget = () => {
             {/* Header with username */}
             <div className="embed-header">
                 <div className="embed-brand">
-                    <img src="https://gitdefense.niyasv.com/favicon.png" alt="" className="embed-favicon" />
+                    <img src="/favicon.svg" alt="" className="embed-favicon" />
                     <span className="embed-title">GitDefense</span>
                 </div>
                 <span className="embed-username">@{username}</span>

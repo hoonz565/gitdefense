@@ -72,6 +72,7 @@ const GitDefenseBoard = () => {
     // Collision Sound Effect
     const hitSynthRef = useRef(null);
     const explosionSynthRef = useRef(null);
+    const laserSynthRef = useRef(null);
     useEffect(() => {
         hitSynthRef.current = new Tone.MembraneSynth({
             pitchDecay: 0.1,
@@ -87,21 +88,44 @@ const GitDefenseBoard = () => {
         }).toDestination();
         explosionSynthRef.current.volume.value = -8;
 
+        laserSynthRef.current = new Tone.MembraneSynth({
+            pitchDecay: 0.05,
+            octaves: 8,
+            oscillator: { type: 'sawtooth' },
+            envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.1 }
+        }).toDestination();
+        laserSynthRef.current.volume.value = -10;
+
         return () => {
             if (hitSynthRef.current) hitSynthRef.current.dispose();
             if (explosionSynthRef.current) explosionSynthRef.current.dispose();
+            if (laserSynthRef.current) laserSynthRef.current.dispose();
         };
     }, []);
 
-    // Play explosion sound on victory (tank destroyed)
+    // Play sounds on game end
     useEffect(() => {
-        if (gameStatus === 'victory') {
-            if (explosionSynthRef.current && Tone.context.state === 'running') {
-                try {
-                    explosionSynthRef.current.triggerAttackRelease("1n", Tone.now());
-                } catch (e) {
-                    console.warn("Explosion audio error:", e);
+        if (Tone.context.state === 'running') {
+            try {
+                if (gameStatus === 'victory') {
+                    // Tank explodes
+                    if (explosionSynthRef.current) {
+                        explosionSynthRef.current.volume.value = -8;
+                        explosionSynthRef.current.triggerAttackRelease("1n", Tone.now());
+                    }
+                } else if (gameStatus === 'defeat') {
+                    // Tank shoots the base (laser sound)
+                    if (laserSynthRef.current) {
+                        laserSynthRef.current.triggerAttackRelease("C6", "16n", Tone.now());
+                    }
+                    // Base explodes shortly after
+                    if (explosionSynthRef.current) {
+                        explosionSynthRef.current.volume.value = -4; // Louder explosion
+                        explosionSynthRef.current.triggerAttackRelease("1m", Tone.now() + 0.15);
+                    }
                 }
+            } catch (e) {
+                console.warn("End game audio error:", e);
             }
         }
     }, [gameStatus]);
@@ -130,7 +154,8 @@ const GitDefenseBoard = () => {
                     if (d.level === 4) totalDamage += 5;
                 });
             });
-            const initialHP = Math.max(50, Math.floor(totalDamage * 0.4));
+            // Increase difficulty: Tank has 85% of total possible damage as HP, minimum 100
+            const initialHP = Math.max(100, Math.floor(totalDamage * 0.85));
             setTankHP(initialHP);
             setMaxTankHP(initialHP);
         }
@@ -862,6 +887,40 @@ const GitDefenseBoard = () => {
             <div className={`toast-notification ${showToast ? 'show' : ''}`}>
                 Copied to clipboard
             </div>
+
+            {/* Game Result Overlay */}
+            {(gameStatus === 'victory' || gameStatus === 'defeat') && (
+                <div className="game-result-overlay" onClick={() => setGameStatus('idle')}>
+                    <div
+                        className={`game-result-box ${gameStatus === 'victory' ? 'win' : 'lose'}`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="game-result-label">
+                            {gameStatus === 'victory' ? '[ MISSION COMPLETE ]' : '[ SYSTEM BREACHED ]'}
+                        </div>
+                        <div className="game-result-title">
+                            {gameStatus === 'victory' ? 'YOU WIN' : 'YOU LOSE'}
+                        </div>
+                        <div className="game-result-sub">
+                            {gameStatus === 'victory'
+                                ? <>Tank neutralized before reaching base.<br />Your contributions held the line. 🛡️</>
+                                : <>Tank broke through all defenses.<br />The base has been destroyed. 💥</>
+                            }
+                        </div>
+                        <button
+                            className="game-result-btn"
+                            onClick={() => {
+                                setGameStatus('idle');
+                                setTankPosition(-1);
+                                lastHitColRef.current = -1;
+                                setTankHP(maxTankHP);
+                            }}
+                        >
+                            ↺ Play Again
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* Embed Modal */}
             {showEmbed && (
