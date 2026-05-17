@@ -110,14 +110,30 @@ const GitDefenseBoard = () => {
     const isPlaying = gameStatus === 'playing';
     const activeCol = null;
     const activeNotes = [];
-    const toggle = () => {};
+    const toggle = () => { };
     const stop = () => { setGameStatus('idle'); };
-    const changeScale = () => {};
+    const changeScale = () => { };
 
     // Reset game when data changes
     useEffect(() => {
         setGameStatus('idle');
         setTankPosition(-1);
+        lastHitColRef.current = -1;
+
+        if (data && data.weeks) {
+            let totalDamage = 0;
+            data.weeks.forEach(w => {
+                w.days.forEach(d => {
+                    if (d.level === 1) totalDamage += 1;
+                    if (d.level === 2) totalDamage += 2;
+                    if (d.level === 3) totalDamage += 3;
+                    if (d.level === 4) totalDamage += 5;
+                });
+            });
+            const initialHP = Math.max(50, Math.floor(totalDamage * 0.4));
+            setTankHP(initialHP);
+            setMaxTankHP(initialHP);
+        }
     }, [data]);
 
     // Focus input on mount
@@ -282,23 +298,9 @@ const GitDefenseBoard = () => {
                 setGameStatus('playing');
                 setTankPosition(-1);
                 lastHitColRef.current = -1;
-
-                // Calculate balanced HP based on grid density
-                let totalDamage = 0;
-                if (data && data.weeks) {
-                    data.weeks.forEach(w => {
-                        w.days.forEach(d => {
-                            if (d.level === 1) totalDamage += 1;
-                            if (d.level === 2) totalDamage += 2;
-                            if (d.level === 3) totalDamage += 3;
-                            if (d.level === 4) totalDamage += 5;
-                        });
-                    });
-                }
-                // Require at least some density to win
-                const initialHP = Math.max(50, Math.floor(totalDamage * 0.4));
-                setTankHP(initialHP);
-                setMaxTankHP(initialHP);
+                
+                // Reset HP to Max HP for a new run
+                setTankHP(maxTankHP);
             } else if (gameStatus === 'paused') {
                 setGameStatus('playing');
             }
@@ -383,7 +385,7 @@ const GitDefenseBoard = () => {
         // Colors from CSS variables (exact match)
         const colors = {
             bg: '#0d0d0d',
-            accent: '#f23400',
+            accent: '#3b82f6',
             text: '#aaaaaa',
             textDim: '#555555',
             textBright: '#ffffff',
@@ -987,7 +989,7 @@ const GitDefenseBoard = () => {
 
                         {/* Left Sibling: The Tank (Absolute) */}
                         <div style={{ position: 'absolute', right: '100%', marginRight: '2rem', top: '50%', transform: 'translateY(-50%)', width: '50px', zIndex: 10 }}>
-                            {gameStatus !== 'idle' && tankPosition >= -1 && (
+                            {tankPosition >= -1 && (
                                 <motion.div
                                     animate={{
                                         x: tankPosition < 0 ? '0px' : `calc(2rem + ${tankPosition * 16}px)`

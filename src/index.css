@@ -4,11 +4,11 @@
 
 :root {
   --bg: #0d0d0d;
-  --border: #f23400;
+  --border: #3b82f6;
   --text: #aaaaaa;
   --text-dim: #555555;
   --text-bright: #ffffff;
-  --accent: #f23400;
+  --accent: #3b82f6;
   --accent-cyan: #66cccc;
   --accent-yellow: #dcdcaa;
   --success: #4ec9b0;

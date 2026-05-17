@@ -38,7 +38,7 @@
 }
 
 .embed-title {
-    color: var(--accent, #f23400);
+    color: var(--accent, #3b82f6);
     font-weight: 700;
     font-size: 14px;
     margin-top: 1px;
@@ -63,7 +63,7 @@
 }
 
 .embed-error {
-    color: var(--error, #f23400);
+    color: var(--error, #cc5533);
 }
 
 /* Graph */
@@ -184,7 +184,7 @@
 }
 
 .embed-link:hover {
-    color: var(--accent, #f23400);
+    color: var(--accent, #3b82f6);
 }
 
 /* Responsive */
